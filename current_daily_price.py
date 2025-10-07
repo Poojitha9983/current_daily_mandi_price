@@ -1,12 +1,11 @@
-#VS code
 import requests
 import pandas as pd
 import os
 
-def get_place_data(place_name):
+def get_place_data(place_name=None, commodity_name=None):
     """
-    User-defined function that takes a place name as parameter 
-    and returns related records from the API. Also saves to CSV.
+    User-defined function that takes place_name and commodity_name as parameters
+    and returns related records from the API.
     """
     # API details
     url = "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070"
@@ -30,22 +29,32 @@ def get_place_data(place_name):
     # Convert JSON → DataFrame
     df = pd.DataFrame(data["records"])
 
-    # Filter rows containing place name in any column
-    filtered_df = df[df.apply(lambda row: place_name.lower() in str(row.values).lower(), axis=1)]
+    # Filter based on place_name
+    filtered_df = df
+    if place_name:
+        filtered_df = filtered_df[filtered_df.apply(
+            lambda row: place_name.lower() in str(row.values).lower(), axis=1
+        )]
+
+    # Filter based on commodity_name
+    if commodity_name:
+        filtered_df = filtered_df[filtered_df.apply(
+            lambda row: commodity_name.lower() in str(row.values).lower(), axis=1
+        )]
 
     # Show result
     if filtered_df.empty:
-        print(f"No records found for '{place_name}'.")
+        print(f"No records found for '{place_name}' and '{commodity_name}'.")
         return None
     else:
-        print(f"✅ Found {len(filtered_df)} records for '{place_name}':\n")
+        print(f"✅ Found {len(filtered_df)} records for '{place_name}' and '{commodity_name}':\n")
         print(filtered_df)
         return filtered_df
 
 
-# ------------------------------
 # User input
 if __name__ == "__main__":
-    user_place = input("Enter Place Name: ")
-    get_place_data(user_place)
+    user_place = input("Enter Place Name : ")
+    user_commodity = input("Enter Commodity Name : ")
+    get_place_data(user_place, user_commodity)
 
