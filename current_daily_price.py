@@ -10,8 +10,8 @@ def get_place_data(place_name, commodity_name):
     and returns related records from the API.
     """
     # API details
-    url = "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070"
-    api_key = "579b464db66ec23bdd000001a6ceed09051b4845418ca7480ea0991d"
+    url = "YOUR_URL_data.gov"
+    api_key = "YOUR_API_KEY_FOR_data.gov"
 
     params = {
     "api-key": api_key,
